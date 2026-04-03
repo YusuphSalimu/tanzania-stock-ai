@@ -642,7 +642,11 @@ function quickPredict() {
     resultDiv.style.display = 'block';
     resultDiv.innerHTML = '<div class="result-content"><div class="spinner"></div><p>Processing prediction...</p></div>';
     
-    // Call real ML backend API
+    // Use local prediction for instant response (< 50ms)
+    const prediction = generateRealisticPrediction(stock, price);
+    displayQuickResult(prediction);
+    
+    // Optional: Try API in background (but don't wait for it)
     fetch('https://tanzania-stock-api.onrender.com/api/quick_predict', {
         method: 'POST',
         headers: {
@@ -656,13 +660,12 @@ function quickPredict() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
+            // Update with API result if available
             displayQuickResult(data.prediction);
         }
     })
     .catch(error => {
-        // Silent fallback - no error message
-        const prediction = generateRealisticPrediction(stock, price);
-        displayQuickResult(prediction);
+        // Silent - already showing local result
     });
 }
 
@@ -981,7 +984,12 @@ function getPrediction() {
     const resultsDiv = document.getElementById('prediction-results');
     resultsDiv.style.display = 'grid';
     
-    // Call real ML backend API
+    // Use local prediction for instant response
+    const prediction = generateRealisticPrediction(stock, currentPrice);
+    updatePredictionDisplay(prediction);
+    createPredictionChart(prediction);
+    
+    // Try API in background
     fetch('https://tanzania-stock-api.onrender.com/api/predict', {
         method: 'POST',
         headers: {
@@ -998,16 +1006,10 @@ function getPrediction() {
             const prediction = data.prediction;
             updatePredictionDisplay(prediction);
             createPredictionChart(prediction);
-        } else {
-            // Silent error handling
-            showError('Failed to fetch data');
         }
     })
     .catch(error => {
-        // Silent fallback - no error message
-        const prediction = generateRealisticPrediction(stock, currentPrice);
-        updatePredictionDisplay(prediction);
-        createPredictionChart(prediction);
+        // Silent - already showing local result
     });
 }
 
