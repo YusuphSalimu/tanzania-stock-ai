@@ -715,15 +715,10 @@ function generateRealisticPrediction(stock, currentPrice) {
 // Display quick prediction result
 function displayQuickResult(prediction) {
     const resultDiv = document.getElementById('quick-result');
-    const priceElement = document.getElementById('predicted-closing-price');
-    const confidenceElement = document.getElementById('prediction-confidence');
-    
-    priceElement.textContent = `TZS ${prediction.predicted_price.toLocaleString()}`;
-    confidenceElement.textContent = `${prediction.confidence}%`;
     
     // Add signal indicator
-    const signalColor = prediction.signal === 'BUY' ? '#28a745' : prediction.signal === 'SELL' ? '#dc3545' : '#ffc107';
-    priceElement.style.color = signalColor;
+    const signalColor = prediction.signal === 'BUY' || prediction.signal === 'STRONG BUY' ? '#28a745' : 
+                      prediction.signal === 'SELL' || prediction.signal === 'STRONG SELL' ? '#dc3545' : '#ffc107';
     
     // Update result display
     resultDiv.innerHTML = `
@@ -739,6 +734,9 @@ function displayQuickResult(prediction) {
             </div>
             <div class="trading-signal" style="margin-top: 0.5rem; padding: 0.5rem;">
                 <small style="color: ${signalColor}; font-weight: 600;">${prediction.signal}</small>
+            </div>
+            <div class="investment-advice" style="margin-top: 0.5rem; padding: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 4px;">
+                <small style="color: #ffffff; font-size: 0.8rem;">${prediction.investment_advice}</small>
             </div>
         </div>
     `;
