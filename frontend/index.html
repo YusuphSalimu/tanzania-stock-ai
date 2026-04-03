@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanzania Stock Market AI - DSE Prediction Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='24' font-size='24'>📈</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Background -->
+    <div class="background-container">
+        <img src="https://images.pexels.com/photos/534216/pexels-photo-534216.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop" alt="Stock Market Background" class="background-image">
+        <div class="background-overlay"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="https://images.pexels.com/photos/534216/pexels-photo-534216.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop" alt="DSE Logo" class="logo-image">
+                    <div>
+                        <h1 class="logo-title">Tanzania Stock AI</h1>
+                        <p class="logo-subtitle">DSE Market Intelligence</p>
+                    </div>
+                </div>
+                <nav class="nav">
+                    <button class="nav-btn active" data-section="dashboard">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </button>
+                    <button class="nav-btn" data-section="stocks">
+                        <i class="fas fa-list"></i> Stocks
+                    </button>
+                    <button class="nav-btn" data-section="predictions">
+                        <i class="fas fa-brain"></i> Predictions
+                    </button>
+                    <button class="nav-btn" data-section="portfolio">
+                        <i class="fas fa-briefcase"></i> Portfolio
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="section-header">
+                    <h2>Market Dashboard</h2>
+                    <p>Real-time Tanzania Stock Exchange Overview</p>
+                </div>
+
+                <!-- Market Summary Cards -->
+                <div class="market-summary">
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h3>Market Change</h3>
+                            <p class="summary-value" id="market-change">+2.34%</p>
+                            <span class="summary-label">Today</span>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h3>Active Stocks</h3>
+                            <p class="summary-value" id="active-stocks">15</p>
+                            <span class="summary-label">Total</span>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h3>Top Gainer</h3>
+                            <p class="summary-value" id="top-gainer">CRDB (+5.2%)</p>
+                            <span class="summary-label">Today</span>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div class="summary-content">
+                            <h3>Top Loser</h3>
+                            <p class="summary-value" id="top-loser">TBL (-2.1%)</p>
+                            <span class="summary-label">Today</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Prediction Form -->
+                <div class="quick-prediction">
+                    <div class="prediction-form-header">
+                        <h3><i class="fas fa-brain"></i> Quick Stock Prediction</h3>
+                        <p>Enter current stock price for instant prediction</p>
+                    </div>
+                    <div class="prediction-form-content">
+                        <div class="form-group">
+                            <label for="quick-stock">Select Stock</label>
+                            <select id="quick-stock">
+                                <option value="">Choose a stock...</option>
+                                <option value="CRDB">CRDB Bank</option>
+                                <option value="NMB">NMB Bank</option>
+                                <option value="DCB">DCB Commercial Bank</option>
+                                <option value="TBL">Tanzania Breweries</option>
+                                <option value="TCC">Tanzania Cigarette Company</option>
+                                <option value="SWISSPORT">Swissport Tanzania</option>
+                                <option value="TPDC">TPDC</option>
+                                <option value="JUBILEE">Jubilee Insurance</option>
+                                <option value="SIMBA">Simba Cement</option>
+                                <option value="DSE">Dar es Salaam Stock Exchange</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="quick-price">Current Price (TZS)</label>
+                            <input type="number" id="quick-price" placeholder="Enter current stock price..." min="0" step="0.01">
+                        </div>
+                        <button class="btn-predict" onclick="quickPredict()">
+                            <i class="fas fa-chart-line"></i> Predict Price
+                        </button>
+                        <div id="quick-result" class="quick-result" style="display: none;">
+                            <div class="result-content">
+                                <h4>Prediction Result</h4>
+                                <div class="prediction-display">
+                                    <span class="predicted-price-label">Predicted closing price:</span>
+                                    <span class="predicted-price-value" id="predicted-closing-price">-</span>
+                                </div>
+                                <div class="prediction-confidence">
+                                    <span class="confidence-label">Confidence:</span>
+                                    <span class="confidence-value" id="prediction-confidence">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-row">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3>Market Overview</h3>
+                            <button class="refresh-btn" onclick="refreshDashboard()">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <div style="height: 280px; position: relative;">
+                            <canvas id="marketChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="top-movers">
+                        <div class="movers-section">
+                            <h3>Top Gainers</h3>
+                            <div id="top-gainers-list" class="movers-list"></div>
+                        </div>
+                        <div class="movers-section">
+                            <h3>Top Losers</h3>
+                            <div id="top-losers-list" class="movers-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stocks Section -->
+            <section id="stocks" class="section">
+                <div class="section-header">
+                    <h2>Stock Listings</h2>
+                    <p>Browse all DSE listed companies</p>
+                </div>
+
+                <!-- Search and Filter -->
+                <div class="search-filter">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="stock-search" placeholder="Search stocks...">
+                    </div>
+                    <select id="sector-filter">
+                        <option value="">All Sectors</option>
+                        <option value="Banking">Banking</option>
+                        <option value="Telecommunications">Telecommunications</option>
+                        <option value="Beverages">Beverages</option>
+                        <option value="Cement">Cement</option>
+                        <option value="Insurance">Insurance</option>
+                    </select>
+                </div>
+
+                <!-- Stocks Table -->
+                <div class="stocks-table-container">
+                    <table class="stocks-table">
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Company Name</th>
+                                <th>Sector</th>
+                                <th>Price (TZS)</th>
+                                <th>Change</th>
+                                <th>Change %</th>
+                                <th>Volume</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stocks-table-body">
+                            <tr>
+                                <td class="stock-symbol">CRDB</td>
+                                <td>CRDB Bank Plc</td>
+                                <td>Banking</td>
+                                <td>3,850</td>
+                                <td class="change-positive">+200</td>
+                                <td class="change-positive">+5.48%</td>
+                                <td>1,234,567</td>
+                                <td><button class="btn-action" onclick="viewStock('CRDB')">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="stock-symbol">NMB</td>
+                                <td>NMB Bank Plc</td>
+                                <td>Banking</td>
+                                <td>2,750</td>
+                                <td class="change-positive">+150</td>
+                                <td class="change-positive">+5.77%</td>
+                                <td>987,654</td>
+                                <td><button class="btn-action" onclick="viewStock('NMB')">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="stock-symbol">DCB</td>
+                                <td>DCB Commercial Bank Plc</td>
+                                <td>Banking</td>
+                                <td>1,850</td>
+                                <td class="change-positive">+50</td>
+                                <td class="change-positive">+2.78%</td>
+                                <td>456,789</td>
+                                <td><button class="btn-action" onclick="viewStock('DCB')">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="stock-symbol">TBL</td>
+                                <td>Tanzania Breweries Limited</td>
+                                <td>Beverages</td>
+                                <td>18,500</td>
+                                <td class="change-negative">-400</td>
+                                <td class="change-negative">-2.11%</td>
+                                <td>234,567</td>
+                                <td><button class="btn-action" onclick="viewStock('TBL')">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="stock-symbol">TCC</td>
+                                <td>Tanzania Cigarette Company</td>
+                                <td>Beverages</td>
+                                <td>12,800</td>
+                                <td class="change-negative">-250</td>
+                                <td class="change-negative">-1.92%</td>
+                                <td>123,456</td>
+                                <td><button class="btn-action" onclick="viewStock('TCC')">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="stock-symbol">SWISSPORT</td>
+                                <td>Swissport Tanzania Limited</td>
+                                <td>Aviation</td>
+                                <td>2,450</td>
+                                <td class="change-positive">+30</td>
+                                <td class="change-positive">+1.24%</td>
+                                <td>89,012</td>
+                                <td><button class="btn-action" onclick="viewStock('SWISSPORT')">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="stock-symbol">TPDC</td>
+                                <td>Tanzania Petroleum Development Corporation</td>
+                                <td>Energy</td>
+                                <td>4,200</td>
+                                <td class="change-positive">+100</td>
+                                <td class="change-positive">+2.44%</td>
+                                <td>67,890</td>
+                                <td><button class="btn-action" onclick="viewStock('TPDC')">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="stock-symbol">JUBILEE</td>
+                                <td>Jubilee Insurance Company Limited</td>
+                                <td>Insurance</td>
+                                <td>1,650</td>
+                                <td class="change-positive">+25</td>
+                                <td class="change-positive">+1.54%</td>
+                                <td>45,678</td>
+                                <td><button class="btn-action" onclick="viewStock('JUBILEE')">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="stock-symbol">SIMBA</td>
+                                <td>Simba Cement Company Limited</td>
+                                <td>Cement</td>
+                                <td>2,100</td>
+                                <td class="change-negative">-20</td>
+                                <td class="change-negative">-0.94%</td>
+                                <td>34,567</td>
+                                <td><button class="btn-action" onclick="viewStock('SIMBA')">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="stock-symbol">DSE</td>
+                                <td>Dar es Salaam Stock Exchange Plc</td>
+                                <td>Financial Services</td>
+                                <td>3,200</td>
+                                <td class="change-positive">+80</td>
+                                <td class="change-positive">+2.56%</td>
+                                <td>23,456</td>
+                                <td><button class="btn-action" onclick="viewStock('DSE')">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="stock-symbol">ACACIA</td>
+                                <td>Acacia Mining Plc</td>
+                                <td>Mining</td>
+                                <td>5,600</td>
+                                <td class="change-positive">+150</td>
+                                <td class="change-positive">+2.75%</td>
+                                <td>12,345</td>
+                                <td><button class="btn-action" onclick="viewStock('ACACIA')">View</button></td>
+                            </tr>
+                            <tr>
+                                <td class="stock-symbol">MNC</td>
+                                <td>Mwalimu Commercial Bank Plc</td>
+                                <td>Banking</td>
+                                <td>1,250</td>
+                                <td class="change-negative">-15</td>
+                                <td class="change-negative">-1.18%</td>
+                                <td>8,901</td>
+                                <td><button class="btn-action" onclick="viewStock('MNC')">View</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Predictions Section -->
+            <section id="predictions" class="section">
+                <div class="section-header">
+                    <h2>AI Predictions</h2>
+                    <p>Machine learning powered stock price predictions</p>
+                </div>
+
+                <!-- Stock Selector -->
+                <div class="prediction-controls">
+                    <select id="prediction-stock">
+                        <option value="">Select a stock</option>
+                        <option value="CRDB">CRDB Bank Plc</option>
+                        <option value="NMB">NMB Bank Plc</option>
+                        <option value="DCB">DCB Commercial Bank Plc</option>
+                        <option value="TBL">Tanzania Breweries Limited</option>
+                        <option value="TCC">Tanzania Cigarette Company</option>
+                        <option value="SWISSPORT">Swissport Tanzania Limited</option>
+                        <option value="TPDC">Tanzania Petroleum Development Corporation</option>
+                        <option value="JUBILEE">Jubilee Insurance Company Limited</option>
+                        <option value="SIMBA">Simba Cement Company Limited</option>
+                        <option value="DSE">Dar es Salaam Stock Exchange Plc</option>
+                        <option value="ACACIA">Acacia Mining Plc</option>
+                        <option value="MNC">Mwalimu Commercial Bank Plc</option>
+                    </select>
+                    <button class="btn-primary" onclick="getPrediction()">
+                        <i class="fas fa-brain"></i> Get Prediction
+                    </button>
+                </div>
+
+                <!-- Prediction Results -->
+                <div id="prediction-results" class="prediction-results" style="display: none;">
+                    <div class="prediction-card">
+                        <h3>Prediction Summary</h3>
+                        <div class="prediction-grid">
+                            <div class="prediction-item">
+                                <label>Current Price</label>
+                                <span id="current-price">-</span>
+                            </div>
+                            <div class="prediction-item">
+                                <label>Predicted Price</label>
+                                <span id="predicted-price">-</span>
+                            </div>
+                            <div class="prediction-item">
+                                <label>Expected Change</label>
+                                <span id="expected-change">-</span>
+                            </div>
+                            <div class="prediction-item">
+                                <label>Confidence</label>
+                                <span id="confidence">-</span>
+                            </div>
+                        </div>
+                        <div class="trading-signal" id="trading-signal">
+                            <h4>Trading Signal</h4>
+                            <p id="signal-text">-</p>
+                        </div>
+                    </div>
+
+                    <div class="prediction-chart">
+                        <h3>Price Prediction</h3>
+                        <div style="height: 200px; position: relative;">
+                            <canvas id="prediction-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Portfolio Section -->
+            <section id="portfolio" class="section">
+                <div class="section-header">
+                    <h2>Portfolio Simulator</h2>
+                    <p>Track your investment performance</p>
+                </div>
+
+                <!-- Portfolio Input -->
+                <div class="portfolio-input">
+                    <h3>Add Holdings</h3>
+                    <div class="holding-form">
+                        <select id="portfolio-stock">
+                            <option value="">Select stock</option>
+                            <option value="CRDB">CRDB Bank Plc</option>
+                            <option value="NMB">NMB Bank Plc</option>
+                            <option value="DCB">DCB Commercial Bank Plc</option>
+                            <option value="TBL">Tanzania Breweries Limited</option>
+                            <option value="TCC">Tanzania Cigarette Company</option>
+                            <option value="SWISSPORT">Swissport Tanzania Limited</option>
+                            <option value="TPDC">Tanzania Petroleum Development Corporation</option>
+                            <option value="JUBILEE">Jubilee Insurance Company Limited</option>
+                            <option value="SIMBA">Simba Cement Company Limited</option>
+                            <option value="DSE">Dar es Salaam Stock Exchange Plc</option>
+                            <option value="ACACIA">Acacia Mining Plc</option>
+                            <option value="MNC">Mwalimu Commercial Bank Plc</option>
+                        </select>
+                        <input type="number" id="portfolio-shares" placeholder="Number of shares" min="1">
+                        <button class="btn-primary" onclick="addHolding()">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Portfolio Summary -->
+                <div id="portfolio-summary" class="portfolio-summary" style="display: none;">
+                    <div class="summary-cards">
+                        <div class="portfolio-card">
+                            <h4>Total Investment</h4>
+                            <p id="total-investment">TZS 0</p>
+                        </div>
+                        <div class="portfolio-card">
+                            <h4>Current Value</h4>
+                            <p id="current-value">TZS 0</p>
+                        </div>
+                        <div class="portfolio-card">
+                            <h4>Total P&L</h4>
+                            <p id="total-pl">TZS 0</p>
+                        </div>
+                        <div class="portfolio-card">
+                            <h4>Return %</h4>
+                            <p id="return-percent">0%</p>
+                        </div>
+                    </div>
+
+                    <!-- Holdings Table -->
+                    <div class="holdings-table">
+                        <h3>Your Holdings</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Stock</th>
+                                    <th>Shares</th>
+                                    <th>Buy Price</th>
+                                    <th>Current Price</th>
+                                    <th>Investment</th>
+                                    <th>Value</th>
+                                    <th>P&L</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="holdings-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

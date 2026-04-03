@@ -1,0 +1,35 @@
+# Render Deployment Configuration
+# Auto-deploy from GitHub to Render
+
+services:
+  # Backend API Service
+  - type: web
+    name: tanzania-stock-api
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python instant_ml_api.py
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: FLASK_ENV
+        value: production
+
+  # Frontend Service
+  - type: web
+    name: tanzania-stock-frontend
+    env: static
+    plan: free
+    buildCommand: echo "Static frontend"
+    staticPublishPath: frontend
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://tanzania-stock-api.onrender.com/api/*
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+# Auto-deployment on push to main branch
+autoDeploy: true

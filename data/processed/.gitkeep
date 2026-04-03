@@ -1,0 +1,2 @@
+# This file ensures the processed data directory is tracked by git
+# Processed CSV files should be placed here but ignored by .gitignore
