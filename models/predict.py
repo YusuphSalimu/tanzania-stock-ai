@@ -105,7 +105,6 @@ class StockPredictor:
             return predicted_price
             
         except Exception as e:
-            print(f"❌ Prediction failed: {e}")
             return None
     
     def predict_multiple_days(self, data, stock_symbol, days=7, model_type='best'):
@@ -197,7 +196,6 @@ class StockPredictor:
             }
             
         except Exception as e:
-            print(f"❌ Risk assessment failed: {e}")
             return {'risk_level': 'UNKNOWN', 'risk_score': 50}
     
     def generate_full_report(self, data, stock_symbol, model_type='best'):

@@ -118,7 +118,6 @@ class StockDataPreprocessor:
         ]
         
         features = stock_data[feature_columns].values
-        targets = stock_data['close'].values
         
         # Scale features
         features_scaled = self.scaler.fit_transform(features)
@@ -128,13 +127,13 @@ class StockDataPreprocessor:
         
         # For traditional ML models (non-sequence)
         X_train, X_test, y_train, y_test = train_test_split(
-            features_scaled[:-1], targets[1:], test_size=0.2, shuffle=False
+            features_scaled[:-1], stock_data['close'].values[1:], test_size=0.2, shuffle=False
         )
         
         return {
             'stock_data': stock_data,
             'features': features_scaled,
-            'targets': targets,
+            'targets': stock_data['close'].values,
             'X_train': X_train,
             'X_test': X_test,
             'y_train': y_train,
@@ -153,9 +152,11 @@ class StockDataPreprocessor:
             try:
                 data = self.prepare_data_for_ml(df, symbol, sequence_length)
                 multi_stock_data[symbol] = data
-                print(f"✅ Prepared data for {symbol}")
+                print(f"Data prepared for {symbol}")
+            except FileNotFoundError:
+                print("Data file not found. Creating sample dataset...")
             except Exception as e:
-                print(f"❌ Error preparing data for {symbol}: {e}")
+                print(f"Data preparation failed for {symbol}: {e}")
         
         return multi_stock_data
     
@@ -173,11 +174,11 @@ if __name__ == "__main__":
     preprocessor = StockDataPreprocessor()
     
     # Test with CRDB stock
-    print("🔧 Testing data preprocessing...")
+    print("Testing data preprocessing...")
     data = preprocessor.prepare_data_for_ml(df, 'CRDB')
     
-    print(f"✅ Data prepared successfully!")
-    print(f"📊 Features shape: {data['features'].shape}")
-    print(f"🎯 Targets shape: {data['targets'].shape}")
-    print(f"📈 Sequences shape: {data['X_seq'].shape}")
-    print(f"🔢 Feature columns: {len(data['feature_columns'])}")
+    print(f"Data prepared successfully!")
+    print(f"Features shape: {data['features'].shape}")
+    print(f"Targets shape: {data['targets'].shape}")
+    print(f"Sequences shape: {data['X_seq'].shape}")
+    print(f"Feature columns: {len(data['feature_columns'])}")

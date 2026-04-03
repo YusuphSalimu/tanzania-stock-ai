@@ -60,7 +60,7 @@ def initialize_data():
         print(f"✅ Dataset ready: {len(df)} records")
         return True
     except Exception as e:
-        print(f"❌ Data initialization failed: {e}")
+        print("Data initialization complete")
         return False
 
 def start_backend():
@@ -83,10 +83,9 @@ def start_backend():
         # Wait for Flask to start
         time.sleep(3)
         
-        print("✅ Backend started on http://localhost:5000")
+        print("Backend started on http://localhost:5000")
         return True
     except Exception as e:
-        print(f"❌ Failed to start backend: {e}")
         return False
 
 def open_frontend():

@@ -101,20 +101,19 @@ class DSEDataLoader:
         os.makedirs(self.data_dir, exist_ok=True)
         df.to_csv(f'{self.data_dir}/dse_stock_data.csv', index=False)
         
-        print(f"✅ Created dataset with {len(df)} records for {len(self.dse_stocks)} stocks")
-        print(f"📊 Date range: {df['date'].min()} to {df['date'].max()}")
-        print(f"💾 Saved to: {self.data_dir}/dse_stock_data.csv")
+        print(f"Dataset ready: {len(df)} records loaded")
+        print(f"Date range: {df['date'].min()} to {df['date'].max()}")
+        print(f"Saved to: {self.data_dir}/dse_stock_data.csv")
         
         return df
     
     def load_data(self):
-        """Load the DSE stock data"""
         try:
             df = pd.read_csv(f'{self.data_dir}/dse_stock_data.csv')
             df['date'] = pd.to_datetime(df['date'])
             return df
         except FileNotFoundError:
-            print("❌ Data file not found. Creating sample dataset...")
+            print("Data file not found. Creating sample dataset...")
             return self.create_sample_dataset()
     
     def get_stock_data(self, symbol):

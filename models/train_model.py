@@ -113,15 +113,15 @@ class StockPredictionModels:
         
         self.performance_metrics[f'lstm_{stock_symbol}'] = metrics
         
-        print(f"✅ LSTM model saved for {stock_symbol}")
-        print(f"📊 LSTM RMSE: {metrics['rmse']:.2f}")
-        print(f"📈 LSTM R²: {metrics['r2']:.4f}")
+        print(f"LSTM model saved for {stock_symbol}")
+        print(f"LSTM RMSE: {metrics['rmse']:.2f}")
+        print(f"LSTM R²: {metrics['r2']:.4f}")
         
         return self.lstm_model, history, metrics
     
     def train_xgboost(self, X_train, y_train, X_test, y_test, stock_symbol):
         """Train XGBoost model for stock prediction"""
-        print(f"🚀 Training XGBoost model for {stock_symbol}...")
+        print(f"Training XGBoost model for {stock_symbol}...")
         
         # XGBoost parameters optimized for stock prediction
         params = {
@@ -164,15 +164,15 @@ class StockPredictionModels:
         
         self.performance_metrics[f'xgb_{stock_symbol}'] = metrics
         
-        print(f"✅ XGBoost model saved for {stock_symbol}")
-        print(f"📊 XGBoost RMSE: {metrics['rmse']:.2f}")
-        print(f"📈 XGBoost R²: {metrics['r2']:.4f}")
+        print(f"XGBoost model saved for {stock_symbol}")
+        print(f"XGBoost RMSE: {metrics['rmse']:.2f}")
+        print(f"XGBoost R²: {metrics['r2']:.4f}")
         
         return self.xgb_model, metrics
     
     def train_random_forest(self, X_train, y_train, X_test, y_test, stock_symbol):
         """Train Random Forest model for stock prediction"""
-        print(f"🌲 Training Random Forest model for {stock_symbol}...")
+        print(f"Training Random Forest model for {stock_symbol}...")
         
         # Random Forest parameters
         params = {
@@ -206,15 +206,15 @@ class StockPredictionModels:
         
         self.performance_metrics[f'rf_{stock_symbol}'] = metrics
         
-        print(f"✅ Random Forest model saved for {stock_symbol}")
-        print(f"📊 Random Forest RMSE: {metrics['rmse']:.2f}")
-        print(f"📈 Random Forest R²: {metrics['r2']:.4f}")
+        print(f"Random Forest model saved for {stock_symbol}")
+        print(f"Random Forest RMSE: {metrics['rmse']:.2f}")
+        print(f"Random Forest R²: {metrics['r2']:.4f}")
         
         return self.rf_model, metrics
     
     def train_all_models(self, data, stock_symbol):
         """Train all three models for a stock"""
-        print(f"🎯 Training all models for {stock_symbol}...")
+        print(f"Training all models for {stock_symbol}...")
         
         results = {}
         
@@ -228,7 +228,7 @@ class StockPredictionModels:
                 )
                 results['lstm'] = lstm_metrics
             except Exception as e:
-                print(f"❌ LSTM training failed: {e}")
+                print(f"Error training model: {e}")
         
         # Train XGBoost (uses regular features)
         try:
