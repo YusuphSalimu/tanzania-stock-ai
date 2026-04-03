@@ -8,6 +8,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import random
 import math
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -190,7 +191,10 @@ if __name__ == '__main__':
     print("Prediction Time: < 50ms")
     print(f"Accuracy: {ml_model.accuracy}")
     print(f"Supported Stocks: {len(ml_model.stock_patterns)}")
-    print("Server: http://localhost:5001")
+    
+    # Get port from environment (Render) or use default
+    port = int(os.environ.get('PORT', 5001))
+    print(f"Server: http://0.0.0.0:{port}")
     print("=" * 50)
     
-    app.run(host='0.0.0.0', port=5001, debug=False, threaded=True)
+    app.run(host='0.0.0.0', port=port, debug=False, threaded=True)
