@@ -25,5 +25,5 @@ ENV FLASK_DEBUG=0
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:5001/api/health || exit 1
 
-# Start the minimal application (no pandas dependency)
-CMD ["python", "instant_ml_api_minimal.py"]
+# Start the ultra-fast application
+CMD ["python", "ultra_fast_api.py"]

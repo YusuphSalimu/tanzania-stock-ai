@@ -1,4 +1,4 @@
-# Tanzania Stock Market AI - Minimal Dependencies (No pandas)
+# Tanzania Stock Market AI - Ultra Fast Dependencies
 flask==3.0.0
 flask-cors==4.0.0
 requests==2.31.0
