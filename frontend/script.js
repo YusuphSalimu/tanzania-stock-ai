@@ -642,7 +642,7 @@ function quickPredict() {
     resultDiv.innerHTML = '<div class="result-content"><div class="spinner"></div><p>Processing prediction...</p></div>';
     
     // Call real ML backend API
-    fetch('http://localhost:5001/api/quick_predict', {
+    fetch('https://tanzania-stock-api.onrender.com/api/quick_predict', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -984,7 +984,7 @@ function getPrediction() {
     resultsDiv.style.display = 'grid';
     
     // Call real ML backend API
-    fetch('http://localhost:5001/api/predict', {
+    fetch('https://tanzania-stock-api.onrender.com/api/predict', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
