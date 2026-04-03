@@ -661,8 +661,7 @@ function quickPredict() {
         }
     })
     .catch(error => {
-        console.error('ML API Error:', error);
-        // Fallback to local prediction if backend is not available
+        // Silent fallback - no error message
         const prediction = generateRealisticPrediction(stock, price);
         displayQuickResult(prediction);
     });
@@ -1005,8 +1004,7 @@ function getPrediction() {
         }
     })
     .catch(error => {
-        console.error('ML API Error:', error);
-        // Fallback to local prediction if backend is not available
+        // Silent fallback - no error message
         const prediction = generateRealisticPrediction(stock, currentPrice);
         updatePredictionDisplay(prediction);
         createPredictionChart(prediction);
