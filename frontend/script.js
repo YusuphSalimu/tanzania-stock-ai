@@ -73,15 +73,17 @@ async function apiCall(endpoint, options = {}) {
         });
         
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            // Silent error handling
+            console.log('API status:', response.status);
         }
         
         const data = await response.json();
         hideLoading();
         return data;
     } catch (error) {
+        // Silent error handling
+        console.log('API Error:', error);
         hideLoading();
-        console.error('API Error:', error);
         showError(`Failed to fetch data: ${error.message}`);
         return null;
     }
@@ -360,7 +362,8 @@ function createPredictionChart(prediction) {
         });
         console.log('Prediction chart created successfully');
     } catch (error) {
-        console.error('Error creating prediction chart:', error);
+        // Silent error handling
+        console.log('Error creating prediction chart:', error);
     }
 }
 
@@ -385,7 +388,7 @@ function addHolding() {
     const shares = parseInt(document.getElementById('portfolio-shares').value);
     
     if (!symbol || !shares || shares <= 0) {
-        showError('Please select a stock and enter valid number of shares');
+        // Silent error handling
         return;
     }
     
@@ -494,7 +497,7 @@ async function refreshDashboard() {
     await loadStocks();
     
     // Show success message
-    showSuccess('Dashboard refreshed successfully');
+    // Silent success message
 }
 
 // Utility Functions
@@ -507,26 +510,24 @@ function hideLoading() {
 }
 
 function showError(message) {
-    // Simple alert for now, could be replaced with toast notification
-    alert(`Error: ${message}`);
+    // Silent error handling
 }
 
 function showSuccess(message) {
-    // Simple alert for now, could be replaced with toast notification
-    alert(`Success: ${message}`);
+    // Silent success message
 }
 
 // Create Market Overview Chart - Enhanced Layout
 function createMarketChart() {
     const canvas = document.getElementById('marketChart');
     if (!canvas) {
-        console.error('Market chart canvas not found');
+        // Silent error handling
         return;
     }
     
     const ctx = canvas.getContext('2d');
     if (!ctx) {
-        console.error('Could not get 2D context for market chart');
+        // Silent error handling
         return;
     }
     
@@ -620,9 +621,9 @@ function createMarketChart() {
                 }
             }
         });
-        console.log('Market chart created successfully');
+        // Silent success message
     } catch (error) {
-        console.error('Error creating market chart:', error);
+        // Silent error handling
     }
 }
 
@@ -632,7 +633,7 @@ function quickPredict() {
     const price = parseFloat(document.getElementById('quick-price').value);
     
     if (!stock || !price || price <= 0) {
-        showError('Please select a stock and enter a valid price');
+        // Silent error handling
         return;
     }
     
@@ -656,8 +657,6 @@ function quickPredict() {
     .then(data => {
         if (data.success) {
             displayQuickResult(data.prediction);
-        } else {
-            showError(data.message || 'Prediction failed');
         }
     })
     .catch(error => {
@@ -956,7 +955,7 @@ function getPrediction() {
     const stock = document.getElementById('prediction-stock').value;
     
     if (!stock) {
-        showError('Please select a stock');
+        // Silent error handling
         return;
     }
     
@@ -1000,7 +999,8 @@ function getPrediction() {
             updatePredictionDisplay(prediction);
             createPredictionChart(prediction);
         } else {
-            showError(data.message || 'Prediction failed');
+            // Silent error handling
+            showError('Failed to fetch data');
         }
     })
     .catch(error => {
