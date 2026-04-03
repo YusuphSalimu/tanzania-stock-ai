@@ -646,27 +646,7 @@ function quickPredict() {
     const prediction = generateRealisticPrediction(stock, price);
     displayQuickResult(prediction);
     
-    // Optional: Try API in background (but don't wait for it)
-    fetch('https://tanzania-stock-api.onrender.com/api/quick_predict', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            stock: stock,
-            price: price
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Update with API result if available
-            displayQuickResult(data.prediction);
-        }
-    })
-    .catch(error => {
-        // Silent - already showing local result
-    });
+    // Skip API call - use local only for speed
 }
 
 // Advanced ML Model Simulation for Tanzania Stock Market
@@ -989,28 +969,7 @@ function getPrediction() {
     updatePredictionDisplay(prediction);
     createPredictionChart(prediction);
     
-    // Try API in background
-    fetch('https://tanzania-stock-api.onrender.com/api/predict', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            symbol: stock,
-            price: currentPrice
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            const prediction = data.prediction;
-            updatePredictionDisplay(prediction);
-            createPredictionChart(prediction);
-        }
-    })
-    .catch(error => {
-        // Silent - already showing local result
-    });
+    // Skip API call - use local only for speed
 }
 
 // Update prediction display
